@@ -17,22 +17,44 @@ def homepage():
 @app.route('/froyo')
 def choose_froyo():
     """Shows a form to collect the user's Fro-Yo order."""
-    pass
-
+    return """
+    <form action="/froyo_results" method="GET">
+        What is your favorite Fro-Yo flavor? <br/>
+        <input type="text" name="flavor"><br/>
+        What kind of toppings do you like? <br/>
+        <input type="text" name="toppings"><br/>
+        <input type="submit" value="Submit!">
+    </form>
+    """
+    
 @app.route('/froyo_results')
 def show_froyo_results():
-    """Shows the user what they ordered from the previous page."""
-    pass
+    users_froyo_flavor = request.args.get('flavor')
+    users_toppings = request.args.get('toppings')
+    return f'You ordered {users_froyo_flavor} flavored Fro-Yo with {users_toppings}!'
 
 @app.route('/favorites')
 def favorites():
     """Shows the user a form to choose their favorite color, animal, and city."""
-    pass
+    return """
+        <form action="/favorites_results" method="GET">
+            What's your favorite color?<br/>
+            <input type="text" name="color"><br/>
+            Whats your favorite animal?<br/>
+            <input type="text" name="animal"><br/>
+            Whats your favorite city?<br/>
+            <input type="text" name="city"><br/>
+            <input type="submit" value="Submit!!">
+        </form>
+    """ 
 
 @app.route('/favorites_results')
 def favorites_results():
     """Shows the user a nice message using their form results."""
-    pass
+    fav_color = request.args.get("color")
+    fav_animal = request.args.get('animal')
+    fav_city = request.args.get('city')
+    return f'You know in {fav_city} there\'s a lot of {fav_color} {fav_animal}s!'
 
 @app.route('/secret_message')
 def secret_message():
