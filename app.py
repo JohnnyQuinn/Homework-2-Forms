@@ -93,11 +93,17 @@ def calculator():
 def calculator_results():
     """Shows the user the result of their calculation."""
     ops = {"add": operator.add, "subtract": operator.sub, "multiply": operator.mul, "divide": operator.truediv}
+    operation = request.args.get('operation')
     num1 = request.args.get('operand1')
     num2 = request.args.get('operand2')
-    operation = request.args.get('operation')
     result = ops[operation](int(num1),int(num2))
-    return f'You chose to {operation} {num1} and {num2}. The result is {result}'
+    context = {
+        'num1': num1,
+        'num2': num2,
+        'operation': operation,
+        'result': result
+    }
+    return render_template('calculator_results.html', **context)
 
 
 # List of compliments to be used in the `compliments_results` route (feel free 
