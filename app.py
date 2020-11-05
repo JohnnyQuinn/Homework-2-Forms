@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
 import random
+import operator
 
 app = Flask(__name__)
 
@@ -60,12 +61,21 @@ def favorites_results():
 def secret_message():
     """Shows the user a form to collect a secret message. Sends the result via
     the POST method to keep it a secret!"""
-    pass
+    return """
+        <form action="/message_results" method="POST">
+            Enter a secret message:<br/>
+            <input type="text" name='message'><br/>
+            <input type='submit' value='submit secret message'>
+        </form>
+    """
 
 @app.route('/message_results', methods=['POST'])
 def message_results():
     """Shows the user their message, with the letters in sorted order."""
-    pass
+    user_message = request.form.get('message')
+    print(f'user_message: {user_message}')
+    scrambled_message = sort_letters(user_message)
+    return f'Here\'s your secret message: <br/> {scrambled_message}'
 
 @app.route('/calculator')
 def calculator():
@@ -88,7 +98,12 @@ def calculator():
 @app.route('/calculator_results')
 def calculator_results():
     """Shows the user the result of their calculation."""
-    pass
+    ops = {"add": operator.add, "subtract": operator.sub, "multiply": operator.mul, "divide": operator.truediv}
+    num1 = request.args.get('operand1')
+    num2 = request.args.get('operand2')
+    operation = request.args.get('operation')
+    result = ops[operation](int(num1),int(num2))
+    return f'You chose to {operation} {num1} and {num2}. The result is {result}'
 
 
 # List of compliments to be used in the `compliments_results` route (feel free 
@@ -136,4 +151,4 @@ def compliments_results():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
